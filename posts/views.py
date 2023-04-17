@@ -1,17 +1,20 @@
-from django.shortcuts import HttpResponse, redirect
+from django.shortcuts import render
+from posts.models import Products
+
 
 # Create your views here.
 
-def hello_view(request):
+def main_page_view(request):
     if request.method == 'GET':
-        return HttpResponse('Hello, its my project')
+        return render(request, 'layouts/index.html')
 
-def redirect_to_time_view(request):
+
+def products_view(request):
     if request.method == 'GET':
-        return redirect('https://time.is/ru/Bishkek')
+        products = Products.objects.all()
 
-def goodby_view(request):
-    if request.method == 'GET':
-        return HttpResponse('Goodby user!')
+        context = {
+            'products': products
+        }
 
-
+    return render(request, 'products/products.html', context=context)
