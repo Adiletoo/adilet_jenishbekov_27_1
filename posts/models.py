@@ -1,11 +1,21 @@
-from django.db import models
+from django.db import models, Post
 
 # Create your models here.
 
 class Products(models.Model):
-    image = models.ImageField()
+    image = models.ImageField(blank=True, null=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     rate = models.FloatField()
     create_date = models.DateField(auto_now=True)
     modified_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return  self.title
+
+class Comment(models.Model):
+    text = models.CharField(max_length=256)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return  self.text
