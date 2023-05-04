@@ -16,9 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from Online_store import settings
-from posts.views import main_page_view, products_view, products_detail_view
+from posts.views import main_page_view, products_view, product_detail_view, create_products_view
 from django.conf.urls.static import static
 
 
@@ -26,6 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_page_view),
     path('products/', products_view),
-    path('products/<int:id>/', products_detail_view)
-]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('products/<int:id>/', product_detail_view),
+    path('products/create/', create_products_view)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

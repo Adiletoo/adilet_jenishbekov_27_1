@@ -1,8 +1,14 @@
 {% extends 'layouts/index.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'detail.css' %}">
+{% endblock %}
 
 {% block content %}
-    <style type="text/css">
-         .products_block {
+
+    <div class="product_block" style="
+       .products_block {
              width: 80%;
              margin-left: 10%;
              margin-top: 50px;
@@ -11,17 +17,41 @@
              margin-top: 20%;
              display: flex;
              justify-content: space-between;
-         }
-    </style>
-    <div class="products_block">
+         }">
+        <div class="image">
+            {% if product.image %}
+                <img style="max-width: 650px" src="/media/{{ product.image }}/" alt="">
+            {% else %}
+                <img src="{% static 'img.png' %}" alt="">
+            {% endif %}
+        </div>
         <div class="info">
-            <h1>{{ products.tittle }}</h1>
-            <h4>{{ products.description}}</h4>
-            <h5>Rate: {{ products.rate }}</h5>
-           <div class="dates">
-               <h5>Created Date {{ products.create_date }}</h5>
-               <h5>Modified Date {{ products.modified_date }}</h5>
-           </div>
+            <h1>{{ product.title }}</h1>
+            <h4>{{ product.description }}</h4>
+            <h4>Rate: {{ product.rate }}</h4>
+            <div class="dates">
+                <p>{{ product.created_date }}</p>
+                <p>{{ product.modified_date }}</p>
+            </div>
+        </div>
+        {% if not user.is_anonymous %}
+        <form action="/products/{{ product.id }}/" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Add review">
+        </form>
+        {% endif %}
+        <div class="create_review">
+
+        </div>
+        <div class="reviews">
+            {% for review in reviews %}
+                <div class="review_block">
+                    <h5>{{ review.text }}</h5>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
+
+
